@@ -6,4 +6,3 @@ prácticas conjuntas con charlas, ejercicios, así que fuera de contexto capaz s
 
 Vamos a usar NodeJS, ya estan instalados Mocha y Chai, y los test se pueden correr con npm test.
 
--- dummy change
