@@ -4,7 +4,8 @@
   "description": "dev basics",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.js"
+    "test": "mocha test/**/*.js",
+    "test.rich": "mocha test/rich/*.js"
   },
   "repository": {
     "type": "git",
