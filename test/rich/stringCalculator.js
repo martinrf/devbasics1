@@ -23,9 +23,7 @@ const PATTERNS = {
  * @type {Class}
  */
 class StringCalculator {
-	constructor( helper ) {
-		this.helper = helper;
-	}
+	constructor() {}
 	/**
 	 * int Add(string numbers).
 	 */
