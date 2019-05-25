@@ -31,10 +31,12 @@ describe("String Calculator", () => {
         assert.equal(StringCalculator.add("//;\n1;2;1003"), 3);
     });
 	
-	it('allows of any length with the following format: “//[delimiter]\\n”', () => {
+	it('allows Delimiters of any length with the following format: “//[delimiter]\\n”', () => {
 		assert.equal(StringCalculator.add("//[tincho][rich]\n1tincho2tincho1003"), 3);
 	});
-    
-    
 
+    it('allows multiple delimiters like this: “//[delim1][delim2]\\n', () => {
+        assert.equal(StringCalculator.add("//[*][%]\n1*2%3"), 6);
+    });
+    
 });

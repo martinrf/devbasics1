@@ -19,29 +19,9 @@ const PATTERNS = {
 // 	)
 // (\\n)
 /**
- * Utility helper
+ * StringCalculator
  * @type {Class}
  */
-class Helper {
-	isString(value){
-		return typeof value === 'string' || value instanceof String;
-	}
-	isNumber(value){
-		return typeof value === 'number' && isFinite(value);
-	}
-	isArray(value){
-		return value && typeof value === 'object' && value.constructor === Array;
-	}
-	isFunction(value){
-		return typeof value === 'function';
-	}
-	isObject(value){
-		return value && typeof value === 'object' && value.constructor === Object;
-	}
-	isNull(value){
-		return value === null;
-	}
-}
 class StringCalculator {
 	constructor( helper ) {
 		this.helper = helper;
@@ -54,40 +34,32 @@ class StringCalculator {
 		if (!values){
 			return 0;
 		}
-		
-		let isString = this.helper.isString(values);
-		
-		if (isString && values.match( PATTERNS.EMPTY_SPACE )){
+
+		if ( values.match( PATTERNS.EMPTY_SPACE )){
 			return 0;
 		}
-		let delimeter = isString && values.match( PATTERNS.FIND_DELIMETER );
+		
 		let regx;
-		if( delimeter ) {
+		
+		if ( values.match( PATTERNS.FIND_DELIMETER )){
+			let delimeter = values.match( PATTERNS.FIND_DELIMETER );
 			let formatted = delimeter[1].match( PATTERNS.FOUND_DELIMITER );
-			delimeter = formatted ? formatted[1].split("][").join("") : delimeter[1];
-			let regex_exp = delimeter + "\n";
-
-			regx = new RegExp(`[${regex_exp},]`, "g");
+			delimeter = formatted ? formatted[1].split("][").join("") : delimeter[1]; // <-- magic
+			let regex_exp = delimeter + "\n,";
+			regx = new RegExp(`[${regex_exp}]`, "g");
 			values = values.replace( PATTERNS.FIND_DELIMETER, "" );
-		} else {
+		} else{
 			regx = PATTERNS.DELIMITERS;
 		}
 
-		let matchNumbers = isString && values.split( regx ).map( Number );
-		let filterNegatives = matchNumbers && matchNumbers.filter(n=>n<0);
+		let numbers = values.split( regx ).map( Number ).filter(n=>n<1001); // filter biggers
 
-		if(isString && matchNumbers && filterNegatives.length > 0) {
-			throw new Error(`negatives not allowed ${filterNegatives.join(",")}`);
-		}
-
-		let filterBigger = matchNumbers && matchNumbers.filter(n=>n<1001);
-
-		if (isString && filterBigger){
-			return this.add( filterBigger ); // lol
+		if ( numbers.filter(n=>n<0).length ){
+			throw new Error(`negatives not allowed ${numbers.filter(n=>n<0).join(",")}`); // don't allow negatives
 		}
 		
-		return values.reduce(( accumulator, currentValue ) => accumulator + currentValue );
+		return numbers.reduce(( accumulator, currentValue ) => accumulator + currentValue );
 	}
 }
 
-module.exports = new StringCalculator( new Helper() );
+module.exports = new StringCalculator();
